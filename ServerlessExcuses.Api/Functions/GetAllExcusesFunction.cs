@@ -21,15 +21,25 @@ public class GetAllExcusesFunction
         HttpRequestData req)
     {
         List<Excuse> excuses = [];
-        using var iterator = _container.GetItemQueryIterator<Excuse>("SELECT * FROM c");
-        while (iterator.HasMoreResults)
-        {
-            var response = await iterator.ReadNextAsync();
-            excuses.AddRange(response.Resource);
-        }
 
-        var responseData = req.CreateResponse(HttpStatusCode.OK);
-        await responseData.WriteAsJsonAsync(excuses);
-        return responseData;
+        try
+        {
+            using var iterator = _container.GetItemQueryIterator<Excuse>("SELECT * FROM c");
+            while (iterator.HasMoreResults)
+            {
+                var feedResponse = await iterator.ReadNextAsync();
+                excuses.AddRange(feedResponse.Resource);
+            }
+
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            await response.WriteAsJsonAsync(excuses);
+            return response;
+        }
+        catch (Exception ex)
+        {
+            var errorResponse = req.CreateResponse(HttpStatusCode.InternalServerError);
+            await errorResponse.WriteStringAsync($"Error retrieving excuses: {ex.Message}");
+            return errorResponse;
+        }
     }
 }
