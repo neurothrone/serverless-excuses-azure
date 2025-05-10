@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 var builder = FunctionsApplication.CreateBuilder(args);
 
 // Add Cosmos DB client
-builder.Services.AddSingleton(s =>
+builder.Services.AddSingleton(_ =>
 {
     var endpoint = Environment.GetEnvironmentVariable("CosmosDbEndpoint");
     var key = Environment.GetEnvironmentVariable("CosmosDbKey");
