@@ -1,0 +1,36 @@
+@BaseApiUrl = http://localhost:7001/api
+@ExcuseId = 1635bdd5-543f-4a28-88e6-e85de4cfdd1b
+
+
+### Get all Excuses
+GET {{BaseApiUrl}}/excuses
+
+
+### Get Excuse by ID
+GET {{BaseApiUrl}}/excuses/{{ExcuseId}}
+
+
+### Get random Excuse
+GET {{BaseApiUrl}}/excuses/random
+
+
+### Create an Excuse
+POST {{BaseApiUrl}}/excuses
+Content-Type: application/json
+
+{
+  "text": "My code compiled itself out of spite."
+}
+
+
+### Update an Excuse
+PUT {{BaseApiUrl}}/excuses/{{ExcuseId}}
+Content-Type: application/json
+
+{
+  "text": "Aliens abducted my homework."
+}
+
+
+### Delete Excuse by ID
+DELETE {{BaseApiUrl}}/excuses/{{ExcuseId}}
