@@ -2,7 +2,7 @@
   "profiles": {
     "ServerlessExcuses.Api": {
       "commandName": "Project",
-      "commandLineArgs": "--port 7294",
+      "commandLineArgs": "--port 7001",
       "launchBrowser": false
     }
   }
