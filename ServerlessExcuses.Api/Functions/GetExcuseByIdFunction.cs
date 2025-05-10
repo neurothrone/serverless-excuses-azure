@@ -17,7 +17,7 @@ public class GetExcuseByIdFunction
 
     [Function("GetExcuseById")]
     public async Task<HttpResponseData> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "excuses/{id}")]
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "excuses/{id:guid}")]
         HttpRequestData req,
         string id)
     {
