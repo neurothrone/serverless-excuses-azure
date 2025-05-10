@@ -10,6 +10,6 @@ public class Excuse
     [JsonPropertyName("text")]
     public string Text { get; set; } = string.Empty;
 
-    [JsonPropertyName("used-count")]
+    [JsonPropertyName("usedCount")]
     public int UsedCount { get; set; } = 0;
 }
