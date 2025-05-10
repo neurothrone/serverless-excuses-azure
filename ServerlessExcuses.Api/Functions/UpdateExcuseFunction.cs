@@ -24,10 +24,7 @@ public class UpdateExcuseFunction
     {
         try
         {
-            var updatedExcuse = await JsonSerializer.DeserializeAsync<Excuse>(
-                req.Body,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-
+            var updatedExcuse = await JsonSerializer.DeserializeAsync<Excuse>(req.Body);
             if (updatedExcuse is null || string.IsNullOrWhiteSpace(updatedExcuse.Text))
             {
                 var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);

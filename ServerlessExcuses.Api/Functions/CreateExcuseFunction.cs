@@ -24,9 +24,7 @@ public class CreateExcuseFunction
         try
         {
             var body = await new StreamReader(req.Body).ReadToEndAsync();
-            var requestBody = JsonSerializer.Deserialize<CreateExcuseDto>(
-                body,
-                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var requestBody = JsonSerializer.Deserialize<CreateExcuseDto>(body);
             if (requestBody is null || string.IsNullOrWhiteSpace(requestBody.Text))
             {
                 var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
@@ -41,13 +39,9 @@ public class CreateExcuseFunction
                 UsedCount = 0
             };
 
-            // await _container.CreateItemAsync(excuse, new PartitionKey(excuse.Id));
             var itemResponse = await _container.CreateItemAsync(excuse, new PartitionKey(excuse.Id));
-            Console.WriteLine($"Cosmos insert successful. RU charge: {itemResponse.RequestCharge}");
-
             var response = req.CreateResponse(HttpStatusCode.Created);
-
-            await response.WriteAsJsonAsync(excuse);
+            await response.WriteAsJsonAsync(itemResponse.Resource);
             return response;
         }
         catch (CosmosException ex)
