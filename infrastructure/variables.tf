@@ -7,8 +7,9 @@ variable "resource_group_name" {
 }
 
 variable "location" {
-  type    = string
-  default = "westeurope"
+  type        = string
+  default     = "Sweden Central"
+  description = "Resource group location"
 }
 
 variable "cosmosdb_account_name" {

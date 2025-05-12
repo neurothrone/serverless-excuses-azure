@@ -9,12 +9,83 @@ resource "azurerm_resource_group" "rg" {
   location = var.location
 }
 
+resource "azurerm_cosmosdb_account" "cosmos" {
+  name                = var.cosmosdb_account_name
+  location            = var.location
+  resource_group_name = azurerm_resource_group.rg.name
+  offer_type          = "Standard"
+  kind                = "GlobalDocumentDB"
+
+  consistency_policy {
+    consistency_level       = "Session"
+  }
+
+  geo_location {
+    location          = var.location
+    failover_priority = 0
+  }
+
+  capabilities {
+    name = "EnableServerless"
+  }
+
+  depends_on = [
+    azurerm_resource_group.rg
+  ]
+}
+
+resource "azurerm_cosmosdb_sql_database" "db" {
+  name                = var.cosmosdb_database_name
+  resource_group_name = azurerm_resource_group.rg.name
+  account_name        = azurerm_cosmosdb_account.cosmos.name
+
+  depends_on = [
+    azurerm_cosmosdb_account.cosmos
+  ]
+}
+
+resource "azurerm_cosmosdb_sql_container" "container" {
+  name                = var.cosmosdb_container_name
+  resource_group_name = azurerm_resource_group.rg.name
+  account_name        = azurerm_cosmosdb_account.cosmos.name
+  database_name       = azurerm_cosmosdb_sql_database.db.name
+  partition_key_paths = [
+    "/id"
+  ]
+
+  # indexing_policy {
+  #   indexing_mode = "consistent"
+  # 
+  #   included_path {
+  #     path = "/*"
+  #   }
+  # 
+  #   included_path {
+  #     path = "/included/?"
+  #   }
+  # 
+  #   excluded_path {
+  #     path = "/excluded/?"
+  #   }
+  # }
+  # 
+  # unique_key {
+  #   paths = ["/definition/idlong", "/definition/idshort"]
+  # }
+
+  depends_on = [
+    azurerm_cosmosdb_sql_database.db
+  ]
+}
+
 resource "azurerm_service_plan" "plan" {
   name                = var.service_plan_name
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   os_type             = "Linux"
   sku_name            = "Y1"
+
+  depends_on = [azurerm_cosmosdb_account.cosmos]
 }
 
 resource "azurerm_storage_account" "storage" {
@@ -23,6 +94,8 @@ resource "azurerm_storage_account" "storage" {
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
+
+  depends_on = [azurerm_cosmosdb_account.cosmos]
 }
 
 resource "azurerm_linux_function_app" "func" {
@@ -45,42 +118,6 @@ resource "azurerm_linux_function_app" "func" {
       dotnet_version = "8.0"
     }
   }
-}
 
-resource "azurerm_cosmosdb_account" "cosmos" {
-  name                = var.cosmosdb_account_name
-  location            = var.location
-  resource_group_name = azurerm_resource_group.rg.name
-  offer_type          = "Standard"
-  kind                = "GlobalDocumentDB"
-
-  consistency_policy {
-    consistency_level = "Session"
-  }
-
-  geo_location {
-    location          = var.location
-    failover_priority = 0
-  }
-
-  # capabilities {
-  #   name = "EnableServerless"
-  # }
-}
-
-resource "azurerm_cosmosdb_sql_database" "db" {
-  name                = var.cosmosdb_database_name
-  resource_group_name = azurerm_resource_group.rg.name
-  account_name        = azurerm_cosmosdb_account.cosmos.name
-}
-
-resource "azurerm_cosmosdb_sql_container" "container" {
-  name                = var.cosmosdb_container_name
-  resource_group_name = azurerm_resource_group.rg.name
-  account_name        = azurerm_cosmosdb_account.cosmos.name
-  database_name       = azurerm_cosmosdb_sql_database.db.name
-  throughput          = null
-  partition_key_paths = [
-    "/id"
-  ]
+  depends_on = [azurerm_cosmosdb_account.cosmos]
 }
