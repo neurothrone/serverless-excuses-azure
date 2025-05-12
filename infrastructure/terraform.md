@@ -1,19 +1,26 @@
 # Terraform
 
-## Setup
+## Commands
+
+### Setup
+
+```shell
+terraform init
+```
 
 ### Create
 
 ```shell
-cd infrastructure
-terraform init
-terraform plan -var-file=env.tfvars
-terraform apply -var-file=env.tfvars
+terraform plan -var-file=env.tfvars -out excuses.tfplan
+terraform show excuses.tfplan
+```
+
+```shell
+terraform apply -var-file=env.tfvars excuses.tfplan
 ```
 
 ### Destroy
 
 ```shell
-cd infrastructure
 terraform destroy -var-file=env.tfvars
 ```
