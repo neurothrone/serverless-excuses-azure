@@ -4,6 +4,9 @@ requests.http
 # dotenv files
 .env
 
+# vs code
+.vscode
+
 # Local .terraform directories
 **/.terraform/*
 
