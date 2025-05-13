@@ -26,7 +26,7 @@ jobs:
 
       - name: Publish .NET Azure Function
         run: |
-          dotnet publish serverless-excuses-azure/src/ServerlessExcuses.Api/ServerlessExcuses.Api.csproj \
+          dotnet publish src/ServerlessExcuses.Api/ServerlessExcuses.Api.csproj \
             -c Release -o published
           cd published
           zip -r ../functionapp.zip .
