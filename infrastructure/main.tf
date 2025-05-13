@@ -97,6 +97,12 @@ resource "azurerm_linux_function_app" "func" {
     application_stack {
       dotnet_version = "8.0"
     }
+
+    cors {
+      allowed_origins = [
+        "https://${azurerm_static_web_app.frontend.default_host_name}"
+      ]
+    }
   }
 
   depends_on = [azurerm_cosmosdb_account.cosmos]
