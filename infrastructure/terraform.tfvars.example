@@ -1,8 +1,0 @@
-subscription_id          = "your-subscription-id"
-resource_group_name      = "rg-serverless-excuses"
-cosmosdb_account_name    = "excuses-cosmos-db"
-cosmosdb_database_name   = "ExcusesDB"
-cosmosdb_container_name  = "Excuses"
-storage_account_name     = "excusesstorageacct"
-service_plan_name        = "excuses-plan"
-function_app_name        = "serverless-excuses-func"
