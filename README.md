@@ -2,8 +2,6 @@
 
 A fully serverless excuse generator using Azure Functions, Cosmos DB, and Azure Static Web Apps.
 
----
-
 ## Setup & Deployment
 
 ### 1. Provision Infrastructure
@@ -30,8 +28,6 @@ Copy the following outputs for use as GitHub secrets:
 - `function_app_url` → for the frontend API URL
 - `resource_group_name` → for GitHub Functions workflow
 - `static_web_app_url` → for testing or frontend CORS
-
----
 
 ### 2. Configure GitHub Secrets
 
@@ -63,14 +59,10 @@ az staticwebapp secrets list \
   --output tsv
 ```
 
----
-
 ### 3. Trigger GitHub Workflows
 
 - Go to each repo's **Actions** tab.
 - Trigger the deployment workflows manually the first time.
-
----
 
 ### 4. Verify Deployments
 
