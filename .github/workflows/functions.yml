@@ -32,4 +32,5 @@ jobs:
           cd src/ServerlessExcuses.Api && \
           func azure functionapp publish ${{ secrets.AZURE_FUNCTIONAPP_NAME }} \
             --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+            --dotnet-isolated \
             --nozip
